@@ -13,14 +13,14 @@ class BinarySearchTree():
             self._root = node
         else:
             self._place(node,self._root)
-            self.size += 1
+        self.size += 1
         
 
     def _place(self,node,current):
-        if node < current:
+        if node.value < current.value:
             if current.left is None:
                 current.left = node
-                node.parent = parent
+                node.parent = current
             else:
                 self._place(node,current.left)
         else:
@@ -44,34 +44,24 @@ class BinarySearchTree():
             else:
                 walk = walk.left
         return None
-
-    def delete(self,value,node = None):
-        if node is None:
-            node = self._root
-
-        #find the node to delete
-        node = find(value,node)
-        # if the node is a leaf
-        if node.left is None and node.right is None:
-            # just delete it (make it None)
-            node = None
-            return
-
-        #if one branch is none, link past the node to its subtree
-        elif node.left is None:
-            node = node.right
-            return
-        elif node.right is None:
-            node = node.left
-            return
-
-        #else the node has two branches
+    
+    def delete(self,value):
+        node = self.find(value)
+        if node is not None:
+            self._delete(node)
+            self.size -= 1
+    
+    def _delete(self,node):
+        if node.left is None or node.right is None:
+            if node.parent.which(node) == -1:
+                node.parent.left = node.left if node.left is not None else node.right
+            else:
+                node.parent.right = node.left if node.left is not None else node.right
+        
         else:
-            node.value = findmax(node).value
-            self.delete(node.value,node.left)
-
-        self.size -= 1
-
+            node.value = self.findmin(node.left).value
+            self._delete(self.find(node.value,node.left))
+        
     def findmax(self,node = None):
         if node is None:
             node = self._root
@@ -85,5 +75,28 @@ class BinarySearchTree():
         while node.left is not None:
             node = node.left 
         return node
-
         
+    def printvalues(self,node = -1):
+        if node is None:
+            return
+        if node == -1:
+            node = self._root
+        print(node.value)
+        self.printvalues(node.left)
+        self.printvalues(node.right)
+    
+    def verify(self):
+        array = []
+        return self._verify(self._root,self.findmin(),self.findmax())
+    
+    def _verify(self,node,min,max):
+        if node is None:
+            return True
+        
+        return node.value > min and node.value < max and self._verify(node.right,node.value,max) and self._verify(node.left,min,node.value)
+            
+            
+            
+            
+            
+            

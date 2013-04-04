@@ -10,11 +10,11 @@ class Node:
         self.value = value
         # use with trees
         self.parent = parent
-
-    def __cmp__(self,other):
-        if self.value < other.value:
+    
+    def which(self,node):
+        if node is self.left:
             return -1
-        elif self.value > other.value:
+        elif node is self.right:
             return 1
         else:
             return 0
