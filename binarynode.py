@@ -10,7 +10,7 @@ class Node:
         self.value = value
         # use with trees
         self.parent = parent
-    
+
     def which(self,node):
         if node is self.left:
             return -1

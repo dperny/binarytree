@@ -93,10 +93,28 @@ class BinarySearchTree():
         if node is None:
             return True
         
-        return node.value > min and node.value < max and self._verify(node.right,node.value,max) and self._verify(node.left,min,node.value)
-            
-            
-            
-            
-            
-            
+        return node.value > min.value and \
+               node.value < max.value and \
+               self._verify(node.right,node.value,max) and \
+               self._verify(node.left,min,node.value)
+    
+    def graphviz(self,filename):
+        outstring = "digraph tree {\n" 
+        outstring = outstring + self._graphmap(self._root,"") + "}"
+        with open(filename,'w') as fp:
+            fp.write(outstring)
+
+    def _graphmap(self,node,string):
+        lstring = ""
+        rstring = ""
+        if node.left is not None:
+            lstring = ( 
+            '\t"{0}" -> "{1}"\n'.format(node.value,node.left.value) 
+            + self._graphmap(node.left,string))
+
+        if node.right is not None:
+            rstring = (
+            '\t"{0}" -> "{1}"\n'.format(node.value,node.right.value)
+            + self._graphmap(node.right,string))
+        
+        return string + lstring + rstring

@@ -3,14 +3,9 @@ from binarynode import *
 import sys
 
 class interpreter:
-    def __init__(self,filename = None):
+    def __init__(self,filename):
         self.store = BinarySearchTree()
-        if filename is not None:
-            with open(filename) as fp:
-                whole_file = fp.read()
-            array = whole_file.split(" ")
-            for i in array:
-                self.store.insert(int(i))
+        self._filename = filename
     
     def cinput(self,action):
         action = action.split(" ")
@@ -24,6 +19,8 @@ class interpreter:
             self.t()
         elif action[0] == "s":
             self.s(int(action[1]),int(action[2]))
+        elif action[0] == "v":
+            self.v()
         
     def i(self,value):
         self.store.insert(value)
@@ -49,10 +46,15 @@ class interpreter:
         self.store.find(value).value = fault
         self.t()
 
-def main(filename = None):
+    def v(self):
+        self.store.graphviz(self._filename)
+        
+
+
+def main(filename):
     cli = interpreter(filename)
     while True:
         cli.cinput(input("> "))
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1])
