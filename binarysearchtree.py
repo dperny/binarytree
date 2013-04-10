@@ -135,3 +135,24 @@ class BinarySearchTree():
             + self._graphmap(node.right,string))
         
         return string + lstring + rstring
+
+    def rotate(self,value):
+        """rotates the node with value to the root position"""
+
+    def _rotate(self,node)
+        if node.parent is None:
+            self._root = node
+            return
+
+        # do a right rotation
+        elif node is node.parent.left:
+            temp = node.right
+            node.right = temp.left
+            # p is the node, q is the parent
+            # let p be q's left child
+            # set P to be the new root
+            # set q's left child to be p's
+            # set P's right child to be Q
+
+        # do a left rotation
+        else:
