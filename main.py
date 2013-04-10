@@ -1,6 +1,7 @@
 from binarysearchtree import *
 from binarynode import *
 import sys
+import subprocess
 
 class interpreter:
     def __init__(self,filename):
@@ -48,6 +49,8 @@ class interpreter:
 
     def v(self):
         self.store.graphviz(self._filename)
+        subprocess.call("dot -Tpng -O " + self._filename,shell=True)
+        subprocess.call("eog "+self._filename+".png",shell=True)
         
 
 

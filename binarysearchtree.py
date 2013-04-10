@@ -8,6 +8,7 @@ class BinarySearchTree():
         self.size = 0
 
     def insert(self,value):
+        """takes in a value to, outputs None"""
         node = Node(None,value,None)
         if self.size == 0:
             self._root = node
@@ -31,6 +32,7 @@ class BinarySearchTree():
                 self._place(node,current.right)
 
     def find(self,value,node = None):
+        """takes in a value to find, returns a node or None if not found"""
         if node is None:
             walk = self._root
         else:
@@ -46,6 +48,7 @@ class BinarySearchTree():
         return None
     
     def delete(self,value):
+        """takes in a value, returns nothing"""
         node = self.find(value)
         if node is not None:
             self._delete(node)
@@ -63,6 +66,10 @@ class BinarySearchTree():
             self._delete(self.find(node.value,node.left))
         
     def findmax(self,node = None):
+        """takes in a node, returns the maximum node in that tree
+
+        if no node is provided, searches from root"""
+
         if node is None:
             node = self._root
         while node.right is not None:
@@ -70,6 +77,10 @@ class BinarySearchTree():
         return node
 
     def findmin(self,node = None):
+        """takes in a node, returns the minimum node in that tree
+
+        if no node is provided, searches from root"""
+
         if node is None:
             node = self._root
         while node.left is not None:
@@ -86,19 +97,25 @@ class BinarySearchTree():
         self.printvalues(node.right)
     
     def verify(self):
+        """returns True if the tree is correct, else returns False
+
+        should return true unless a node is directly modified"""
+
         array = []
-        return self._verify(self._root,self.findmin(),self.findmax())
+        return self._verify(self._root,self.findmin().value-1,self.findmax().value+1)
     
     def _verify(self,node,min,max):
         if node is None:
             return True
-        
-        return node.value > min.value and \
-               node.value < max.value and \
-               self._verify(node.right,node.value,max) and \
-               self._verify(node.left,min,node.value)
-    
+        if node.value > min \
+        and node.value < max \
+        and self._verify(node.left,min,node.value) \
+        and self._verify(node.right,node.value,max):
+            return True
+        else: return False
+
     def graphviz(self,filename):
+        """takes in a filename, outputs a graphviz file"""
         outstring = "digraph tree {\n" 
         outstring = outstring + self._graphmap(self._root,"") + "}"
         with open(filename,'w') as fp:
