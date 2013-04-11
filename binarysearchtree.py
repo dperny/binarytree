@@ -138,10 +138,13 @@ class BinarySearchTree():
     def rotate(self,value):
         """rotates the node with value to the root position"""
         node = self.find(value)
-        while node.parent is not None:
+        while node is not self._root:
             self._rotate(node)
 
     def _rotate(self,pivot):
+        if pivot.parent is None:
+            self._root = pivot
+            return
 
         # do a right rotation
         if pivot is pivot.parent.left:
@@ -173,4 +176,6 @@ class BinarySearchTree():
             pivot.parent = root.parent
             root.parent = pivot
 
-        if pivot.parent == None: self._root = pivot
+        if pivot.parent is not None:
+            if pivot.parent.left is root: pivot.parent.left = pivot
+            else: pivot.parent.right = pivot

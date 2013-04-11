@@ -28,6 +28,8 @@ class interpreter:
             self.load(action[1])
         elif action[0] == "q":
             self.quit()
+            return False
+        return True
         
     def insert(self,value):
         self.store.insert(value)
@@ -78,8 +80,9 @@ class interpreter:
 
 def main(filename):
     cli = interpreter(filename)
-    while True:
-        cli.cinput(input("> "))
+    status = True
+    while status:
+        status = cli.cinput(input("> "))
 
 if __name__ == '__main__':
     main(sys.argv[1])
