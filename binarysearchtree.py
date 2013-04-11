@@ -113,7 +113,6 @@ class BinarySearchTree():
         and self._verify(node.right,node.value,max):
             return True
         else: return False
-
     def graphviz(self,filename):
         """takes in a filename, outputs a graphviz file"""
         outstring = "digraph tree {\n" 
@@ -138,21 +137,40 @@ class BinarySearchTree():
 
     def rotate(self,value):
         """rotates the node with value to the root position"""
+        node = self.find(value)
+        while node.parent is not None:
+            self._rotate(node)
 
-    def _rotate(self,node)
-        if node.parent is None:
-            self._root = node
-            return
+    def _rotate(self,pivot):
 
         # do a right rotation
-        elif node is node.parent.left:
-            temp = node.right
-            node.right = temp.left
-            # p is the node, q is the parent
-            # let p be q's left child
-            # set P to be the new root
-            # set q's left child to be p's
-            # set P's right child to be Q
+        if pivot is pivot.parent.left:
+            # save a reference to the parent node
+            root = pivot.parent
+
+            # the left node of the parent node
+            # becomes the right node of the pivot node
+            root.left = pivot.right
+            if root.left is not None: root.left.parent = root
+
+            # the right node of the pivot node becomes root
+            pivot.right = root
+            pivot.parent = root.parent
+            root.parent = pivot
 
         # do a left rotation
-        else:
+        elif pivot is pivot.parent.right:
+            # save a reference to the parent node
+            root = pivot.parent
+
+            # the right node of the parent node
+            # becomes the left node of the pivot node
+            root.right = pivot.left
+            if root.right is not None: root.right.parent = root
+
+            # the left node of the pivot node becomes root
+            pivot.left = root
+            pivot.parent = root.parent
+            root.parent = pivot
+
+        if pivot.parent == None: self._root = pivot

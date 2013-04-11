@@ -6,7 +6,7 @@ import subprocess
 class interpreter:
     def __init__(self,filename):
         self.store = BinarySearchTree()
-        self._filename = filename
+        self._filename = filename + ".dot"
     
     def cinput(self,action):
         action = action.split(" ")
@@ -23,7 +23,11 @@ class interpreter:
         elif action[0] == "v":
             self.visualize()
         elif action[0] == "r":
-            self.rotate()
+            self.rotate(int(action[1]))
+        elif action[0] == "l":
+            self.load(action[1])
+        elif action[0] == "q":
+            self.quit()
         
     def insert(self,value):
         self.store.insert(value)
@@ -56,7 +60,20 @@ class interpreter:
 
     def rotate(self,value):
         self.store.rotate(value)
-        
+
+    def load(self,filename):
+        outlist = []
+        with open(filename) as fp:
+            for line in fp:
+                tokens = line.split()
+                tokens = [int(i) for i in tokens]
+                outlist = outlist + tokens
+        for value in outlist:
+            self.insert(value)
+
+    def quit(self):
+        subprocess.call("make clean",shell=True)
+
 
 
 def main(filename):
