@@ -40,6 +40,9 @@ class BinarySearchTree():
 
         while walk is not None:
             if value == walk.value:
+                self._rotate(walk)
+                if walk.parent is None:
+                    self._root = walk
                 return walk
             elif value > walk.value:
                 walk = walk.right
@@ -56,14 +59,20 @@ class BinarySearchTree():
     
     def _delete(self,node):
         if node.left is None or node.right is None:
-            if node.parent.which(node) == -1:
-                node.parent.left = node.left if node.left is not None else node.right
-            else:
-                node.parent.right = node.left if node.left is not None else node.right
-        
+            if node.parent.left is node:
+                if node.left is not None:
+                    node.parent.left = node.left
+                else:
+                    node.parent.left = node.right
+            elif node.parent.right is node:
+                if node.right is not None:
+                    node.parent.right = node.left
+                else:
+                    node.parent.right = node.right
         else:
-            node.value = self.findmin(node.left).value
-            self._delete(self.find(node.value,node.left))
+            mini = self.findmin(node.right)
+            node.value = mini.value
+            self._delete(mini)
         
     def findmax(self,node = None):
         """takes in a node, returns the maximum node in that tree
@@ -92,8 +101,8 @@ class BinarySearchTree():
             return
         if node == -1:
             node = self._root
-        print(node.value)
         self.printvalues(node.left)
+        print(node.value)
         self.printvalues(node.right)
     
     def verify(self):
@@ -132,7 +141,7 @@ class BinarySearchTree():
             rstring = (
             '\t"{0}" -> "{1}"\n'.format(node.value,node.right.value)
             + self._graphmap(node.right,string))
-        
+
         return string + lstring + rstring
 
     def rotate(self,value):

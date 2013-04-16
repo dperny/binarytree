@@ -53,7 +53,7 @@ class interpreter:
     
     def swap(self,value,fault):
         self.store.find(value).value = fault
-        self.t()
+        self.test()
 
     def visualize(self):
         self.store.graphviz(self._filename)
